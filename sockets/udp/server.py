@@ -27,4 +27,7 @@ def server(port=6789):
         server_socket.close()
 
 if __name__ == "__main__":
-    server()
+    from sockets.utils import parse_args
+
+    args = parse_args("UDP Server")
+    server(args.port)

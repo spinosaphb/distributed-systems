@@ -36,4 +36,7 @@ class Connection(threading.Thread):
             self.client_socket.close()
 
 if __name__ == "__main__":
-    server()
+    from sockets.utils import parse_args
+
+    args = parse_args("TCP Server")
+    server(args.host, args.port)

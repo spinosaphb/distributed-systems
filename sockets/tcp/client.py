@@ -23,4 +23,7 @@ def client(host="localhost", port=7896):
         s.close()
 
 if __name__ == "__main__":
-    client("200.129.39.70", 7896)
+    from sockets.utils import parse_args
+
+    args = parse_args("TCP Client")
+    client(args.host, args.port)

@@ -24,5 +24,7 @@ def client(host="localhost", port=6789):
         print("Error:", str(e))
 
 if __name__ == "__main__":
-    # --host localhost --port 6789
-    client()
+    from sockets.utils import parse_args
+
+    args = parse_args("UDP Client")
+    client(args.host, args.port)
