@@ -21,14 +21,15 @@ def server(port=6789):
         server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         server_port = port
         server_socket.bind(('', server_port))
-
+        print("Received")
         while True:
-            data, client_address = server_socket.recvfrom(4096)
-            received_obj = AirlineCompany.deserialize(data)
-            client_ip, client_port = client_address
 
+            data, client_address = server_socket.recvfrom(4096)
+            client_ip, client_port = client_address
             print("Received connection from client with IP:", client_ip, "and port:", client_port)
-            
+
+            received_obj = AirlineCompany.deserialize(data)
+
             if isinstance(received_obj, AirlineCompany):
                 print(f"Received data for Airline Company: [{str(received_obj)}]")
             else:

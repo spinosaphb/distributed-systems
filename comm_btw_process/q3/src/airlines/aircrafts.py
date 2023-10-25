@@ -2,13 +2,9 @@ from dataclasses import dataclass
 from typing import List
 import pickle
 
-@dataclass
-class Automatic:
-    autopilot_guided: bool = False
-
 
 @dataclass
-class Aircraft(Automatic):
+class Aircraft:
     """
     Aircraft class
 
@@ -22,7 +18,7 @@ class Aircraft(Automatic):
 
 
     def __str__(self):
-        return "\{"+f" Model: {self.model}\nCapacity: {self.capacity}\nRange: {self.range_}\nAutopilot guided: {self.autopilot_guided} "+"/}"
+        return "\{"+f" Model: {self.model}\nCapacity: {self.capacity}\nRange: {self.range_}"+"/}"
 
 
 class CargoAircraft(Aircraft):
