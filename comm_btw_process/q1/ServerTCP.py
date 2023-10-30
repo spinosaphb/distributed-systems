@@ -7,14 +7,15 @@ import struct
 
 # Crie um soquete do servidor
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
+host = '192.168.1.2'
+port = 12345
 # Associe o soquete ao endereço e porta
-server_socket.bind(('0.0.0.0', 12345))
+server_socket.bind((host, port))
 
 # Aguarde conexões
 server_socket.listen(1)
 
-print("Servidor aguardando conexões em 0.0.0.0:12345")
+print(f'Servidor aguardando conexões em {host}:{port}')
 
 # Aceite uma conexão
 client_socket, client_address = server_socket.accept()
