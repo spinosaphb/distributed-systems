@@ -1,4 +1,5 @@
 import socket
+from streams.utils import from_data
 
 def client(data, host="localhost", port=6789):
     try:
@@ -16,9 +17,11 @@ def client(data, host="localhost", port=6789):
         
         data, server_address = client_socket.recvfrom(1024)
         modified_message = data.decode('utf-8')
-        
+
         print("from server:\n", modified_message)
         client_socket.close()
+
+        return modified_message
     except Exception as e:
         print("Error:", str(e))
 

@@ -1,4 +1,5 @@
 from streams.out_stream import PersonOutputPrintStream, PersonOutputFileStream, PersonOutputTCPStream
+from streams.in_stream import PersonInputPrintStream, PersonInputFileStream, PersonInputTCPStream
 from person import Person
 
 
@@ -12,12 +13,16 @@ def main():
         Person("José", "12345678903", 22),
     ]
 
-    pops = PersonOutputPrintStream(people)
-    pofs = PersonOutputFileStream(people)
-    pots = PersonOutputTCPStream(people)
-    pops.write()
-    pofs.write()
-    pots.write()
+    # PersonOutputPrintStream(people).write()
+    # PersonOutputFileStream(people).write()
+    # PersonOutputTCPStream(people).write()
+
+    PersonInputPrintStream().read()
+    PersonInputFileStream().read()
+    PersonInputTCPStream().read()
+
+
+
 
 
 if __name__ == "__main__":
