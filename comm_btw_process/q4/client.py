@@ -27,7 +27,9 @@ class Client:
 
 
 if __name__ == '__main__':
-    server_address = ('localhost', 8080)
+    host = '192.168.1.2'
+    port = 8080
+    server_address = (host, port)
     client = Client(server_address)
     client.startup()
     while client.active:

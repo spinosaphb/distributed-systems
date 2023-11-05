@@ -65,7 +65,9 @@ def handle_client(
 
 def start_server(voting_manager: VotingManager):
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server.bind(('0.0.0.0', 8080))
+    host = '192.168.1.2'
+    port = 8080
+    server.bind((host, port))
     server.listen(5)
     print("Voting server started...")
 
