@@ -65,5 +65,5 @@ class Service:
         cursor = self.cursor
         cursor.execute("SELECT * FROM candidates")
         candidates_data = cursor.fetchall()
-        candidates = map(lambda c: Candidate(*c), candidates_data)
+        candidates = [Candidate(*c) for c in candidates_data]
         return candidates

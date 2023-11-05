@@ -11,8 +11,9 @@ def handle_client(
     voting_manager: VotingManager
 ):
     voting_manager.startup()
+    client_socket.send(f"Login successful as {user.role}.\n".encode())
     print(f"[handle_client]Connection accepted from {addr[0]}:{addr[1]}")
-    
+
     def get_answer(question: str) -> str:
         client_socket.send(question.encode())
         return client_socket.recv(1024).decode()
@@ -90,7 +91,6 @@ def start_server(voting_manager: VotingManager):
 
         user = voting_manager.authenticate_user(username, password)
         if user:
-            client_socket.send(f"Login successful as {user.role}.\n".encode())
             client_handler = threading.Thread(
                 target=handle_client,
                 args=(client_socket, addr, user, voting_manager)

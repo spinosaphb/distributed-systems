@@ -14,12 +14,15 @@ class VotingManager:
 
     def close_voting(self):
         self.startup()
-        time_limit = 30  # For example, 60 seconds
+        time_limit = 200  # For example, 60 seconds
         time.sleep(time_limit)
         print("Voting has been closed.")
         winner, percentages = \
             self.calculate_winner(self.service.get_candidates())
-        print(f"Winner: {winner.name}. Percentages: {percentages}")
+        if(winner):
+            print(f"Winner: {winner.name}. Percentages: {percentages}")
+        else:
+            print("There are no candidates")
         self.active_voting = False
 
     def startup(self):
@@ -36,8 +39,10 @@ class VotingManager:
         return self.service.get_candidates()
 
     def calculate_winner(self, candidates: Iterable[Candidate]):
+        if len(candidates) == 0:
+            return None, {}
         total_votes = \
-            reduce(lambda x, y: x + y, map(lambda c: c.nvotes, candidates))
+            reduce(lambda x, y: x + y, map(lambda c: c.nvotes, candidates),0)
         winner = max(candidates, key=lambda c: c.nvotes)
         percentages = {
             candidate.name: candidate.nvotes / total_votes * 100
