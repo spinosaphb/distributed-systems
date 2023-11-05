@@ -1,6 +1,6 @@
 import socket
 from typing import Optional
-
+from message import Message
 
 class Client:
 
@@ -17,9 +17,11 @@ class Client:
     def shutdown(self):
         self.client.close()
 
-    def get_question(self):
-        question = self.client.recv(1024).decode()
-        print(question)
+    def get_question(self) -> Message:
+        response = self.client.recv(1024)
+        question = Message.from_bytes(response)
+        print(question.message)
+        return question
 
     def send_answer(self):
         answer = input()
@@ -34,5 +36,6 @@ if __name__ == '__main__':
     client.startup()
     while client.active:
         message = client.get_question()
-        client.send_answer()
+        if(message.required_response):
+            client.send_answer()
     client.shutdown()
