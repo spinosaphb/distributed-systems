@@ -15,7 +15,6 @@ def vote(candidate_name: str, server_address):
 
 if __name__ == '__main__':
     server_address = ('localhost', 8080)
-
     while True:
         candidate = input("Enter the candidate's name or 'exit' to end")
         if candidate.lower() == 'exit':

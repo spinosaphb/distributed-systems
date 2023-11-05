@@ -50,7 +50,7 @@ def handle_client(
     else:
         candidates = voting_manager.service.get_candidates()
         while True:
-            candidate = input("Enter the candidate's name or 'exit' to end: ")
+            candidate = get_answer("Enter the candidate's name or 'exit' to end: ")
             if candidate.lower() == 'exit':
                 break
             if candidate in candidates:
