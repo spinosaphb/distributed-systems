@@ -10,7 +10,8 @@ def handle_client(
     user: User,
     voting_manager: VotingManager
 ):
-    print(f"Connection accepted from {addr[0]}:{addr[1]}")
+    voting_manager.startup()
+    print(f"[handle_client]Connection accepted from {addr[0]}:{addr[1]}")
     client_socket.send("Connection accepted...".encode())
 
     def get_answer(question: str) -> str:
@@ -79,7 +80,6 @@ def start_server(voting_manager: VotingManager):
     voting_timer_thread.start()
 
     while True:
-        voting_manager.startup()
         client_socket, addr = server.accept()
         print(f"Connection accepted from {addr[0]}:{addr[1]}")
 
