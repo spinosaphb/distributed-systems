@@ -22,8 +22,7 @@ class Service:
 
     @property
     def cursor(self) -> Cursor:
-        if self._cursor is None:
-            raise Exception("Cursor not initialized")
+        self.startup()
         return self._cursor
 
     @cursor.setter
@@ -33,9 +32,9 @@ class Service:
     def startup(self):
         self.conn = sqlite3.connect('resources/voting.db')
 
-        self.cursor = self.conn.cursor()
+        self._cursor = self.conn.cursor()
 
-        self.cursor.execute('''
+        self._cursor.execute('''
             CREATE TABLE IF NOT EXISTS candidates (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 name TEXT,
@@ -63,7 +62,8 @@ class Service:
         self.conn.commit()
 
     def get_candidates(self) -> Iterable[Candidate]:
-        self.cursor.execute("SELECT * FROM candidates")
-        candidates_data = self.cursor.fetchall()
+        cursor = self.cursor
+        cursor.execute("SELECT * FROM candidates")
+        candidates_data = cursor.fetchall()
         candidates = map(lambda c: Candidate(*c), candidates_data)
         return candidates

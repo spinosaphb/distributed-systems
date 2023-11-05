@@ -13,7 +13,8 @@ class VotingManager:
         self.active_voting = True
 
     def close_voting(self):
-        time_limit = 60  # For example, 60 seconds
+        self.startup()
+        time_limit = 30  # For example, 60 seconds
         time.sleep(time_limit)
         print("Voting has been closed.")
         winner, percentages = \

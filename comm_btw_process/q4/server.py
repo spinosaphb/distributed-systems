@@ -12,8 +12,7 @@ def handle_client(
 ):
     voting_manager.startup()
     print(f"[handle_client]Connection accepted from {addr[0]}:{addr[1]}")
-    client_socket.send("Connection accepted...".encode())
-
+    
     def get_answer(question: str) -> str:
         client_socket.send(question.encode())
         return client_socket.recv(1024).decode()

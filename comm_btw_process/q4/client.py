@@ -19,7 +19,7 @@ class Client:
 
     def get_question(self):
         question = self.client.recv(1024).decode()
-        return question
+        print(question)
 
     def send_answer(self):
         answer = input()
@@ -34,7 +34,5 @@ if __name__ == '__main__':
     client.startup()
     while client.active:
         message = client.get_question()
-        print(message, " ")
-        if(message):
-            client.send_answer()
+        client.send_answer()
     client.shutdown()
