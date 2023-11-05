@@ -1,22 +1,36 @@
 import socket
+from typing import Optional
 
 
-def vote(candidate_name: str, server_address):
-    client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    client.connect(server_address)
+class Client:
 
-    client.send(candidate_name.encode())
-    response = client.recv(1024).decode()
+    client: Optional[socket.socket] = None
+    active: bool = True
 
-    print(response)
+    def __init__(self, server_address: tuple[str, int]) -> None:
+        self.server_address = server_address
 
-    client.close()
+    def startup(self):
+        self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.client.connect(self.server_address)
+
+    def shutdown(self):
+        self.client.close()
+
+    def get_question(self):
+        question = self.client.recv(1024).decode()
+        print(question)
+
+    def send_answer(self):
+        answer = input()
+        self.client.send(answer.encode())
 
 
 if __name__ == '__main__':
     server_address = ('localhost', 8080)
-    while True:
-        candidate = input("Enter the candidate's name or 'exit' to end")
-        if candidate.lower() == 'exit':
-            break
-        vote(candidate, server_address)
+    client = Client(server_address)
+    client.startup()
+    while client.active:
+        client.get_question()
+        client.send_answer()
+    client.shutdown()
