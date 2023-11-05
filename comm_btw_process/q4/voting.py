@@ -9,7 +9,7 @@ import time
 
 class VotingManager:
     def __init__(self):
-        self.service = Service()
+        self._service = None
         self.active_voting = True
 
     def close_voting(self):
@@ -22,6 +22,7 @@ class VotingManager:
         self.active_voting = False
 
     def startup(self):
+        self.service = Service()
         self.service.startup()
 
     def shutdown(self):

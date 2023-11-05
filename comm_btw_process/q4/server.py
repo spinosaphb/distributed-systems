@@ -12,6 +12,7 @@ def handle_client(
 ):
     print(f"Connection accepted from {addr[0]}:{addr[1]}")
     client_socket.send("Connection accepted...".encode())
+
     def get_answer(question: str) -> str:
         client_socket.send(question.encode())
         return client_socket.recv(1024).decode()
@@ -50,7 +51,9 @@ def handle_client(
     else:
         candidates = voting_manager.service.get_candidates()
         while True:
-            candidate = get_answer("Enter the candidate's name or 'exit' to end: ")
+            candidate = get_answer(
+                "Enter the candidate's name or 'exit' to end: "
+            )
             if candidate.lower() == 'exit':
                 break
             if candidate in candidates:
@@ -63,7 +66,7 @@ def handle_client(
     client_socket.close()
 
 
-def start_server():
+def start_server(voting_manager: VotingManager):
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     host = '192.168.1.2'
     port = 8080
@@ -76,7 +79,6 @@ def start_server():
     voting_timer_thread.start()
 
     while True:
-        voting_manager = VotingManager()
         voting_manager.startup()
         client_socket, addr = server.accept()
         print(f"Connection accepted from {addr[0]}:{addr[1]}")
@@ -102,5 +104,5 @@ def start_server():
 
 
 if __name__ == "__main__":
-    
-    start_server()
+    voting_manager = VotingManager()
+    start_server(voting_manager)
