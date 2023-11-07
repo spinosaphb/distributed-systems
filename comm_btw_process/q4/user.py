@@ -1,6 +1,6 @@
+#user.py
 from dataclasses import dataclass
 from enum import Enum
-
 
 class role(Enum):
     admin = 1

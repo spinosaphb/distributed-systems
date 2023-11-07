@@ -1,3 +1,4 @@
+#server.py
 import socket
 import threading
 from voting import VotingManager

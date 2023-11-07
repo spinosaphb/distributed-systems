@@ -1,5 +1,5 @@
+#candidate.py
 from dataclasses import dataclass
-
 
 @dataclass
 class Candidate:
