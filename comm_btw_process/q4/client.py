@@ -36,7 +36,10 @@ if __name__ == '__main__':
     client = Client(server_address)
     client.startup()
     while client.active:
-        message = client.get_question()
+        try:
+            message = client.get_question()
+        except:
+            break
         if(message.required_response):
             client.send_answer()
     client.shutdown()

@@ -56,9 +56,9 @@ class Service:
         self.cursor.execute("DELETE FROM candidates WHERE id = ?", (id,))
         self.conn.commit()
 
-    def update_candidate(self, id, name):
+    def update_candidate(self, id):
         self.cursor.execute(
-            "UPDATE candidates SET name = ? WHERE id = ?", (name, id)
+            "UPDATE candidates SET nvotes = nvotes + 1 WHERE id = ?", (id,)
         )
         self.conn.commit()
 

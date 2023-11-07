@@ -9,14 +9,16 @@ import time
 
 
 class VotingManager:
+
+    time_limit = 80
+    active_voting = True
+
     def __init__(self):
         self._service = None
-        self.active_voting = True
 
     def close_voting(self):
-        self.startup()
-        time_limit = 200  # For example, 60 seconds
-        time.sleep(time_limit)
+        self.startup() 
+        time.sleep(self.time_limit)
         print("Voting has been closed.")
         winner, percentages = \
             self.calculate_winner(self.service.get_candidates())

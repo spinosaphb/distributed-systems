@@ -9,6 +9,16 @@
             "username": "user1",
             "password": "userpassword",
             "role": "voter"
+        },
+        {
+            "username": "user2",
+            "password": "userpassword",
+            "role": "voter"
+        },
+        {
+            "username": "user3",
+            "password": "userpassword",
+            "role": "voter"
         }
     ]
 }

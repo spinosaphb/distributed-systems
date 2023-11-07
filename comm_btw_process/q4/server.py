@@ -4,6 +4,7 @@ import threading
 from voting import VotingManager
 from user import User
 from message import Message
+from pprint import pprint
 
 
 def get_answer(client_socket: socket.socket, question: str) -> str:
@@ -30,13 +31,15 @@ def handle_client(
         return
 
     if user.is_admin():
-        while True:
+        alive = True
+        while alive:
             admin_option =get_answer(client_socket,"""Administrative options:
                 (1) Add candidate
                 (2) Remove candidate
                 (3) Send note
-                (4) Close
-            """.encode())
+                (4) Candidates status
+                (5) Close
+            """)
 
             match admin_option:
                 case '1':
@@ -52,23 +55,32 @@ def handle_client(
                     print(note)
                     send_message(client_socket, note)
                 case '4':
+                    candidates = voting_manager.service.get_candidates()
+                    candidates_str = [f"Id: {candidate.candidate_id} - Name: {candidate.name} => Score: {candidate.nvotes}" for candidate in candidates]
+                    send_message(client_socket, 'Candidates Scoring:\n' + '\n'.join(candidates_str)+"\n------------------")
+                case '5':
+                    alive = False
                     break
     else:
-        candidates = voting_manager.service.get_candidates()
         while True:
-            candidate = get_answer(client_socket, 
-                "Enter the candidate's name or 'exit' to end: "
-            )
-            if candidate.lower() == 'exit':
+            candidates = voting_manager.service.get_candidates()
+            candidates_map = {c.candidate_id: c.name for c in candidates}
+            candidates_str = [f"Id: {candidate.candidate_id} - Name: {candidate.name}" for candidate in candidates]
+            send_message(client_socket, 'Candidates:\n' + '\n'.join(candidates_str)+"\n------------------")
+
+            candidate_id = int(get_answer(client_socket, 
+                "Enter the candidate's id or '0' to end: "
+            ))
+            if candidate_id == 0:
                 break
-            if candidate in candidates:
-                response = get_answer(client_socket, candidate)
-                print(response)
-            else:
-                print("Invalid candidate.")
+            if candidate_id in candidates_map:
+                voting_manager.service.update_candidate(candidate_id)
+                send_message(client_socket, f"Your vote in {candidates_map[candidate_id]} was registered!\n\nWaiting the result...")
+                while VotingManager.active_voting: pass
+                break
+            send_message(client_socket, "Invalid candidate.")
 
     client_socket.close()
-
 
 def start_server(voting_manager: VotingManager):
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -85,21 +97,28 @@ def start_server(voting_manager: VotingManager):
     while True:
         client_socket, addr = server.accept()
         print(f"Connection accepted from {addr[0]}:{addr[1]}")
+        while True:
+            username = get_answer(client_socket,"Enter your username:")
+            password = get_answer(client_socket, "Enter your password:")
 
-        username = get_answer(client_socket,"Enter your username:")
-        password = get_answer(client_socket, "Enter your password:")
-
-        user = voting_manager.authenticate_user(username, password)
-        if user:
-            client_handler = threading.Thread(
-                target=handle_client,
-                args=(client_socket, addr, user, voting_manager)
-            )
-            client_handler.start()
-        else:
-            send_message(client_socket,"Login failed. Incorrect username or password.")
+            user = voting_manager.authenticate_user(username, password)
+            if user:
+                client_handler = threading.Thread(
+                    target=handle_client,
+                    args=(client_socket, addr, user, voting_manager)
+                )
+                client_handler.start()
+            else:
+                send_message(client_socket,"Login failed. Incorrect username or password.")
+                continue
+            break
+            
 
 
 if __name__ == "__main__":
-    voting_manager = VotingManager()
-    start_server(voting_manager)
+    try:
+        voting_manager = VotingManager()
+        start_server(voting_manager)
+    except Exception as e:
+        pprint(e)
+        exit()

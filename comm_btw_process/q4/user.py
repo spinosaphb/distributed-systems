@@ -1,20 +1,14 @@
 #user.py
 from dataclasses import dataclass
-from enum import Enum
-
-class role(Enum):
-    admin = 1
-    user = 2
-
 
 @dataclass
 class User:
     username: str
     password: str
-    role: role
+    role: str
 
     def is_admin(self):
-        return self.role == role.admin
+        return self.role == "admin"
 
     @classmethod
     def from_json(cls, json_list):
