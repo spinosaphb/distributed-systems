@@ -1,11 +1,11 @@
 from fastapi.routing import APIRouter, JSONResponse
-from cbtw_process_api.models import (
+from models import (
     Aircraft,
     CargoAircraft,
     PassengerAircraft,
     AirlineCompany
 )
-from cbtw_process_api.db import Repository
+from db import Repository
 from typing import List
 
 

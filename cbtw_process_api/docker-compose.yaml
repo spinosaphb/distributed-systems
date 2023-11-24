@@ -1,0 +1,24 @@
+version: '3'
+services:
+  fastapi_backend:
+    build: .
+    image: fastapi_backend:0.0.1
+    container_name: "fastapi_server"
+    networks:
+      - aircraft_services
+    ports:
+      - 5000:5000
+    expose:
+      - 5000
+
+  acmongodb:
+    image: mongo:4.4.9
+    container_name: "acmongodb"
+    networks:
+      - aircraft_services
+    ports:
+      - 27017:27017
+    volumes:
+      - "~/acmongodb/:/root/db"
+networks:
+  aircraft_services:

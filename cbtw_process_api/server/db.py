@@ -1,8 +1,8 @@
 from motor.motor_asyncio import AsyncIOMotorClient
 from bson.objectid import ObjectId
-from cbtw_process_api.models import Aircraft, AirlineCompany
+from models import Aircraft, AirlineCompany
 from typing import List
-from cbtw_process_api.config import (
+from config import (
     MONGODB_URL,
     MONGODB_DB,
     AIRCRAFTS_COLLECTION,
