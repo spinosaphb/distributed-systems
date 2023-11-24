@@ -1,0 +1,6 @@
+MONGODB_URL = 'mongodb://localhost:27017'
+MONGODB_DB = 'aircrafts_db'
+AIRCRAFTS_COLLECTION = 'aircrafts'
+AIRLINE_COMPANIES_COLLECTION = 'airline_companies'
+MAX_CONNECTIONS_COUNT = 10
+MIN_CONNECTIONS_COUNT = 1
